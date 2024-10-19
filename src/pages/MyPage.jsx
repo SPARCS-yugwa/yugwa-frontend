@@ -5,6 +5,8 @@ import a from "../assets/images/a.png";
 import Footer from "../components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilValue } from "recoil";
+import { userDataState } from "../store/atoms";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -61,22 +63,23 @@ const Select = styled.div`
 `;
 
 const MyPage = () => {
+  const userData = useRecoilValue(userDataState);
   return (
     <div className="All">
       <HomeWrapper>
         <Header navTo={""} headerText={"마이페이지"} />
         <UserWrap>
           <UserInfo>
-            <Profile></Profile>
+            <Profile src={userData.imageUrl || ""} alt="Profile" />
             <div>
-              <Nickname>name</Nickname>
-              <GrayText>초급 Lv.1</GrayText>
+              <Nickname>{userData.nickname || "Guest"}</Nickname>{" "}
+              {/* name 수정 */}
+              <GrayText>
+                초급 Lv.{parseInt(userData.expLevel / 100) + 1}
+              </GrayText>{" "}
+              {/* exp 수정 */}
             </div>
           </UserInfo>
-          {/* <img
-            src={a}
-            style={{ height: "20px", marginLeft: "20px", marginBottom: "20px" }}
-          /> */}
         </UserWrap>
 
         <SelectWrap>
