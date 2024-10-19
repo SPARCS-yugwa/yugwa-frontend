@@ -89,6 +89,7 @@ export const getComments = async (voteId) => {
       },
     });
     console.log("vote_id로 조회 성공", response.data.data);
+    return response.data.data;
   } catch (error) {
     console.log("댓글 등록 에러 : ", error);
   }

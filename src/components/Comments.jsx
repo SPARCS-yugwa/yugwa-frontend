@@ -14,6 +14,7 @@ const Profile = styled.img`
   width: 33px;
   height: 33px;
   margin-right: 14px;
+  border-radius: 50%;
 `;
 
 const Nickname = styled.span`
@@ -34,10 +35,10 @@ const Comment = styled.h1`
   color: black;
 `;
 
-const Comments = ({ nickname, date, comment }) => {
+const Comments = ({ nickname, date, comment, profile }) => {
   return (
     <CommentWrap>
-      <Profile src={userImg} />
+      <Profile src={profile} />
       <div>
         <div>
           <Nickname>{nickname}</Nickname>
