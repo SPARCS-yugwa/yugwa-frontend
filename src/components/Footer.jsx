@@ -42,10 +42,14 @@ const Footer = ({ where }) => {
       setHomeIcon(home);
       setChatIcon(blueChat);
       setUserIcon(user);
-    } else {
+    } else if (where == 2) {
       setHomeIcon(home);
       setChatIcon(chat);
       setUserIcon(blueUser);
+    } else {
+      setHomeIcon(home);
+      setChatIcon(chat);
+      setUserIcon(user);
     }
   }, [where]);
 
