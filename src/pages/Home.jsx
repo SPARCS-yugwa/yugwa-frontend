@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import head from "../assets/images/head.png";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "../components/Footer";
+import { getVotes } from "../APIs/voteAPi";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -110,6 +111,8 @@ const ChevronLeft = styled(ChevronIcon)`
 
 const Home = () => {
   const navigate = useNavigate();
+  const [fetchedData, setFetchedData] = useState([]);
+  const [myList, setMyList] = useState([]);
 
   // Dummy data 배열 생성
   const dummyDatas = [
@@ -146,6 +149,15 @@ const Home = () => {
   ];
 
   const [cardIdx, setCardIdx] = useState(0);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getVotes();
+      setFetchedData(response);
+    };
+    getData();
+    console.log(myList);
+  }, []);
 
   // 인덱스를 순환하여 카드를 표시하기 위한 로직
   const handlePrevClick = () => {
@@ -205,3 +217,28 @@ const Home = () => {
 };
 
 export default Home;
+
+/*
+[
+    {
+        "id": 1,
+        "title": "1번 투표 입니다",
+        "totalCount": 1,
+        "voteElements": [
+            {
+                "id": 1,
+                "title": "1번항목",
+                "count": 0
+            },
+            {
+                "id": 2,
+                "title": "2번항목",
+                "count": 1
+            }
+        ],
+        "regDate": "2024-10-17T16:47:32.214",
+        "category": "과학",
+        "replyCount": 0
+    }
+]
+*/

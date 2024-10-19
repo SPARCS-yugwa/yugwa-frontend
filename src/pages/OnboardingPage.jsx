@@ -134,7 +134,9 @@ const OnboardingPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const geolocation = useRecoilValue(geolocationState);
   const setLocation = useSetRecoilState(locationState);
+  const [kakaoLogin, setKakaoLogin] = useState();
   const { kakao } = window;
+  const url = process.env.REACT_APP_KAKAO;
 
   //환경 변수
   const APP_KEY = process.env.REACT_APP_APP_KEY;
@@ -148,6 +150,8 @@ const OnboardingPage = () => {
   };
 
   useEffect(() => {
+    setKakaoLogin(process.env.REACT_APP_KAKAO);
+    console.log(kakaoLogin);
     // const fetchData = async () => {
     //   try {
     //     const response = await fetch("https://ddubam.site/api/members/1");
@@ -193,7 +197,8 @@ const OnboardingPage = () => {
 
   const handleClick = () => {
     if (currentPage === 1) {
-      window.location.href = "https://ddubam.site/api/members/kakao/login/test";
+      window.location.href =
+        "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=d3b80e0c52bbfd1c8c168532ffecd2cd&redirect_uri=https://yugwa.site/api/members/kakao";
     }
   };
 
@@ -256,15 +261,15 @@ const OnboardingPage = () => {
       )}
 
       <BtnWrap>
-        {/* <StartLink onClick={handleClick} active={currentPage === 1 ? 1 : 0}>
+        <StartLink onClick={handleClick} active={currentPage === 1 ? 1 : 0}>
           유과 시작하기
-        </StartLink> */}
-        <StartLink
+        </StartLink>
+        {/* <StartLink
           onClick={() => navigate("/home")}
           active={currentPage === 1 ? 1 : 0}
         >
           유과 시작하기
-        </StartLink>
+        </StartLink> */}
       </BtnWrap>
     </HomeWrapper>
   );

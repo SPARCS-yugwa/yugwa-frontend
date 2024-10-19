@@ -1,1 +1,1 @@
-export const BASE_URL = "https://yuguwa.site/api";
+export const BASE_URL = "https://yugwa.site/api";
