@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { userIdState } from "../store/atoms";
 import { fetchAndPlaySpeech, getReply } from "../APIs/chatbotAPI";
 import Header from "../components/Header";
+import gemini from "../components/gemini";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -106,6 +107,7 @@ const Question = () => {
       setInputValue("");
 
       const reply = await getReply(userId, inputValue);
+      gemini(inputValue);
       fetchAndPlaySpeech(reply.chat);
       const botMessage =
         reply && reply.chat

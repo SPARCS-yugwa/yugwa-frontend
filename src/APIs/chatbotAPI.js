@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const BASE_URL = "https://sodamsodam.site/api";
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("accessToken");
 // const BASE_URL = "http://ddubam.site:8080/api";
 
 const APP_KEY = process.env.REACT_APP_APP_KEY;

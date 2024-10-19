@@ -152,45 +152,8 @@ const OnboardingPage = () => {
   useEffect(() => {
     setKakaoLogin(process.env.REACT_APP_KAKAO);
     console.log(kakaoLogin);
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await fetch("https://ddubam.site/api/members/1");
-    //     const data = await response.json();
-    //   } catch (error) {
-    //     console.error("Failed to fetch user data:", error);
-    //   }
-    // };
-    // fetchData();
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       const { latitude, longitude } = position.coords;
-    //       setGeoData({ latitude, longitude });
-    //       const geocoder = new kakao.maps.services.Geocoder();
-    //       const callback = function (result, status) {
-    //         if (status === kakao.maps.services.Status.OK) {
-    //           const address =
-    //             result[0].region_1depth_name +
-    //             " " +
-    //             result[0].region_2depth_name;
-    //           setLocation(address);
-    //         } else {
-    //           console.log("Geocoder failed due to: " + status);
-    //         }
-    //       };
-    //       geocoder.coord2RegionCode(
-    //         position.coords.longitude,
-    //         position.coords.latitude,
-    //         callback
-    //       );
-    //     },
-    //     (error) => {
-    //       console.error("Geolocation error:", error);
-    //     }
-    //   );
-    // } else {
-    //   console.log("Geolocation is not supported by this browser.");
-    // }
+
+    const token = localStorage.getItem("accessToken");
   }, [setUserData, setGeoData, setLocation]);
 
   const navigate = useNavigate();

@@ -9,11 +9,9 @@ const { persistAtom } = recoilPersist({
 export const userDataState = atom({
   key: "userDataState", // 고유한 키
   default: {
-    nickName: "",
+    name: "",
+    id: 0,
     exp: 0,
-    walkedDay: 0,
-    finishedCount: 0,
-    pickedCount: 0,
     profile: "",
   },
   effects_UNSTABLE: [persistAtom],

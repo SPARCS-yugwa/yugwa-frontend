@@ -28,7 +28,7 @@ const ViewText = styled.h3`
   padding: 10px;
   color: #5752d9;
   font-size: 15px;
-  font-wieght: 500;
+  font-weight: 500;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 `;
 

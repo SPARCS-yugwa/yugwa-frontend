@@ -12,6 +12,9 @@ import Footer from "../components/Footer";
 import { getVotes } from "../APIs/voteAPi";
 import first from "../assets/images/first.png";
 import second from "../assets/images/second.png";
+import { useRecoilState } from "recoil";
+import { userDataState, userIdState } from "../store/atoms";
+import { jwtDecode } from "jwt-decode"; // jwt-decode를 named import로 수정
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -153,65 +156,36 @@ const Home = () => {
   const navigate = useNavigate();
   const [fetchedData, setFetchedData] = useState([]);
   const [myList, setMyList] = useState([]);
-
-  // Dummy data 배열 생성
-  const dummyDatas = [
-    {
-      title: "enfp는 사람이 아님",
-      category: "mbti",
-      vote1: 10,
-      vote2: 15,
-      vote1Title: "사람이다",
-      vote2Title: "사람아니다",
-      date: "2024.10.17",
-      commentCnt: 10,
-    },
-    {
-      title: "고양이가 개보다 똑똑해?",
-      category: "동물",
-      vote1: 50,
-      vote2: 45,
-      vote1Title: "그렇다",
-      vote2Title: "아니다",
-      date: "2024.10.16",
-      commentCnt: 5,
-    },
-    {
-      title: "AI는 인간을 지배할 것인가?",
-      category: "AI",
-      vote1: 20,
-      vote2: 30,
-      vote1Title: "그렇다",
-      vote2Title: "아니다",
-      date: "2024.10.15",
-      commentCnt: 12,
-    },
-  ];
-
   const [cardIdx, setCardIdx] = useState(0);
+
+  // Recoil에서 사용자 데이터와 ID 상태를 가져옴
+  const [userData, setUserData] = useRecoilState(userDataState);
+  const [userId, setUserId] = useRecoilState(userIdState);
 
   useEffect(() => {
     const getData = async () => {
       const response = (await getVotes()) || [];
       setMyList(response.map((item) => item.id));
-      // console.log(myList);
-
       setFetchedData(response);
     };
-    getData();
-    // console.log(myList);
-  }, []);
 
-  // 인덱스를 순환하여 카드를 표시하기 위한 로직
+    // JWT에서 사용자 데이터 추출
+    const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
+    const decoded = jwtDecode(token);
+    console.log(decoded);
+    getData();
+  }, [setUserData, setUserId]);
+
+  // 카드 인덱스를 순환하여 Carousel 동작
   const handlePrevClick = () => {
     setCardIdx((prevIdx) =>
-      prevIdx === 0 ? dummyDatas.length - 1 : prevIdx - 1
+      prevIdx === 0 ? fetchedData.length - 1 : prevIdx - 1
     );
   };
 
   const handleNextClick = () => {
     setCardIdx((prevIdx) =>
-      prevIdx === dummyDatas.length - 1 ? 0 : prevIdx + 1
+      prevIdx === fetchedData.length - 1 ? 0 : prevIdx + 1
     );
   };
 
@@ -224,16 +198,13 @@ const Home = () => {
         <MainWrap>
           <UserWrap>
             <UserInfo>
-              <Profile></Profile>
+              <Profile src={userData.profile || ""} alt="Profile" />
               <div>
-                <Nickname>name</Nickname>
-                <GrayText>초급 Lv.1</GrayText>
+                <Nickname>{userData.name || "Guest"}</Nickname>{" "}
+                {/* name 수정 */}
+                <GrayText>초급 Lv.{userData.exp}</GrayText> {/* exp 수정 */}
               </div>
             </UserInfo>
-            {/* <img
-            src={a}
-            style={{ height: "20px", marginLeft: "20px", marginBottom: "20px" }}
-          /> */}
           </UserWrap>
           <SelectWrap>
             <Select1 onClick={() => navigate("/search")}>
@@ -249,10 +220,9 @@ const Home = () => {
           <Carousel>
             <ChevronLeft icon={faChevronLeft} onClick={handlePrevClick} />
             <ChevronRight icon={faChevronRight} onClick={handleNextClick} />
-            {/* 카드 데이터 순환 */}
             {fetchedData.map(
               (data, index) =>
-                index == cardIdx && (
+                index === cardIdx && (
                   <TalkCard
                     key={index}
                     id={data.id}
