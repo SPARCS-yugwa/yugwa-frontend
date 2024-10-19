@@ -214,13 +214,13 @@ const Home = () => {
             </UserInfo>
           </UserWrap>
           <SelectWrap>
-            <Select1 onClick={() => navigate("/search")}>
+            <Select1 onClick={() => navigate("/question")}>
               <Img src={first} />
-              <SelectText>유사과학 검색</SelectText>
+              <SelectText>유사과학 물어보기</SelectText>
             </Select1>
-            <Select2 onClick={() => navigate("/question")}>
+            <Select2 onClick={() => navigate("/search")}>
               <Img src={second} />
-              <SelectText>AI에게 물어보기</SelectText>
+              <SelectText>논문 검색</SelectText>
             </Select2>
           </SelectWrap>
           <BoldText>인기 있는 논의 주제</BoldText>

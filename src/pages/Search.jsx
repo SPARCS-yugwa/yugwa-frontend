@@ -115,6 +115,7 @@ const KeywordLi = styled.li`
   border: 1px solid #85a5ff;
   color: #1c1e1f;
   padding: 16px 12px;
+  display: flex;
 `;
 
 const KeywordCount = styled.div`
@@ -122,6 +123,8 @@ const KeywordCount = styled.div`
   margin-bottom: 10px;
   display: flex;
   gap: 8px;
+  display: flex;
+  position: relative;
 `;
 
 const Nothing = styled.div`
@@ -132,6 +135,12 @@ const Nothing = styled.div`
   height: 40%;
   justify-content: center;
   align-items: center;
+`;
+
+const goSummary = styled.div`
+  background-color: black;
+  right: 10px;
+  width: 100px;
 `;
 
 const RecentKeyword = styled.span``;
@@ -285,17 +294,19 @@ const Search = () => {
               <KeywordLi
                 key={paper.id}
                 // onClick={() => placeClick(place.place_name)}
-                onClick={() => navigate(`/searchDetail/${paper.id}`)}
               >
-                {paper.title.length > 30
-                  ? `${paper.title.substring(0, 30)}...`
-                  : paper.title}
+                <div style={{width:"80%"}}>
+                  {paper.title.length > 20
+                    ? `${paper.title.substring(0, 20)}...`
+                    : paper.title}
+                </div>
+                <div style={{width:"20%", color:"#5752d9", cursor:"pointer"}} onClick={() => navigate(`/searchDetail/${paper.id}`)}>개요 보기</div>
               </KeywordLi>
             ))}
           </KeywordUl>
         ) : (
           <Nothing>
-            <WhiteText style={{ fontSize: "16px" }}>
+            <WhiteText style={{ fontSize: "20px" }}>
               검색 결과가 없습니다
             </WhiteText>
             <GrayText style={{ fontSize: "16px", color: "#797982" }}>
@@ -306,43 +317,19 @@ const Search = () => {
       ) : (
         <RecentWrap>
           <TextWrap>
-            <WhiteText>최근 검색어</WhiteText>
-            <GrayText style={{ cursor: "pointer" }} onClick={deleteAllRecent}>
-              모두 삭제
-            </GrayText>
+            <WhiteText style={{ fontSize: '16px' }}>현재 인기 있는 논문 키워드</WhiteText>
           </TextWrap>
-
           <RecentUl>
             {searchedKeywords.map((keyword, index) => (
               <RecentLi key={index}>
                 <WhiteText
+                  style={{ color:"#5752d9", cursor: "pointer" }}
                   onClick={() => {
                     handleKeywordClick(keyword.word);
                   }}
                 >
-                  <FontAwesomeIcon
-                    icon="far fa-clock"
-                    style={{ marginRight: "10px" }}
-                  />
-                  {keyword.word}
+                  {"\u00A0" + (index+1) + ". " + keyword.word}
                 </WhiteText>
-                <GrayText
-                  style={{ cursor: "pointer" }}
-                  // onClick={() => deleteCertainRecent(keyword.id)}
-                >
-                  <img
-                    src={close}
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      paddingLeft: "10px",
-                      paddingTop: "9px",
-                      paddingBottom: "10px",
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => navigate("/search")}
-                  />
-                </GrayText>
               </RecentLi>
             ))}
           </RecentUl>

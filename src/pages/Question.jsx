@@ -89,7 +89,6 @@ const ChatButton = styled.button`
 const LogoIcon = styled.img`
   width: 56px;
   height: 56px;
-  cursor: pointer;
   margin-bottom: 20px;
 `;
 
@@ -114,11 +113,19 @@ const Question = () => {
       <ContentWrap>
         <LogoIcon src={logoIcon} />
         <ButtonWrap>
-          <ChatButton onClick={() => navigate("/questionAnswer")}>
-            MBTI F는 진짜{"\n"} 감성적인게 맞나요?
+          <ChatButton onClick={() => navigate("/questionAnswer", {
+                state: {
+                  inputValue: "MBTI F는 진짜 감성적일까?",
+                },
+              })}>
+            MBTI F는 진짜{"\n"} 감성적일까?
           </ChatButton>
-          <ChatButton onClick={() => navigate("/questionAnswer")}>
-            공부 머리는 유전자가{"\n"} 중요한가요?
+          <ChatButton onClick={() => navigate("/questionAnswer", {
+                state: {
+                  inputValue: "공부 머리는 유전자 영향이 클까?",
+                },
+              })}>
+            공부 머리는 유전자{"\n"} 영향이 클까?
           </ChatButton>
         </ButtonWrap>
       </ContentWrap>
