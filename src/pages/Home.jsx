@@ -10,6 +10,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "../components/Footer";
 import { getVotes } from "../APIs/voteAPi";
+import first from "../assets/images/first.png";
+import second from "../assets/images/second.png";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -31,6 +33,7 @@ const HeaderImg = styled.img`
 
 const MainWrap = styled.div`
   padding: 22px 12px;
+  padding-top: 0px;
 `;
 
 const SelectWrap = styled.div`
@@ -38,6 +41,14 @@ const SelectWrap = styled.div`
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+`;
+
+const Img = styled.img`
+  width: 77px;
+  height: 77px;
+  /* position: absolute; */
+  /* top: 50%; */
+  margin: auto;
 `;
 
 const Select1 = styled.div`
@@ -107,6 +118,35 @@ const ChevronRight = styled(ChevronIcon)`
 
 const ChevronLeft = styled(ChevronIcon)`
   left: 10px;
+`;
+const UserWrap = styled.div`
+  border-bottom: 3px solid #e6ebf9;
+`;
+
+const UserInfo = styled.div`
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+`;
+
+const Profile = styled.img`
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  margin-right: 20px;
+`;
+
+const Nickname = styled.h1`
+  color: #26282b;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+`;
+
+const GrayText = styled.h1`
+  font-size: 14px;
+  color: #9fa4a9;
+  font-weight: 400;
 `;
 
 const Home = () => {
@@ -182,11 +222,26 @@ const Home = () => {
           <HeaderImg src={head} alt="Header Image" />
         </Header>
         <MainWrap>
+          <UserWrap>
+            <UserInfo>
+              <Profile></Profile>
+              <div>
+                <Nickname>name</Nickname>
+                <GrayText>초급 Lv.1</GrayText>
+              </div>
+            </UserInfo>
+            {/* <img
+            src={a}
+            style={{ height: "20px", marginLeft: "20px", marginBottom: "20px" }}
+          /> */}
+          </UserWrap>
           <SelectWrap>
             <Select1 onClick={() => navigate("/search")}>
+              <Img src={first} />
               <SelectText>유사과학 검색</SelectText>
             </Select1>
             <Select2 onClick={() => navigate("/chatbot")}>
+              <Img src={second} />
               <SelectText>AI에게 물어보기</SelectText>
             </Select2>
           </SelectWrap>
@@ -209,6 +264,8 @@ const Home = () => {
                     vote2Title={data.voteElements[1].title}
                     date={data.regDate}
                     commentCnt={data.commentCnt}
+                    vote1id={data.voteElements[0].id}
+                    vote2id={data.voteElements[1].id}
                   />
                 )
             )}

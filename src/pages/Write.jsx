@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
-import { makeVote } from "../APIs/voteAPi";
+import { makeVote } from "../APIs/voteAPi"; // Import the makeVote API
 import { useNavigate } from "react-router-dom";
 
 const HomeWrapper = styled.div`
@@ -69,16 +69,17 @@ const Write = () => {
   const [category, setCategory] = useState("");
   const [vote1, setVote1] = useState("");
   const [vote2, setVote2] = useState("");
-  const now = new Date();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 기본 동작 방지
-    console.log("Form submitted");
-    makeVote(title, now, [vote1, vote2], category);
-    console.log({ title, category, vote1, vote2 });
-    navigate("/community");
-    // 데이터를 서버로 전송하거나 다른 동작을 여기에 추가할 수 있음
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form behavior
+    const now = new Date(); // Get the current date
+    try {
+      await makeVote(title, now, [vote1, vote2], category); // Make POST request with form data
+      navigate("/community"); // Navigate back to the community page after submission
+    } catch (error) {
+      console.error("Error submitting vote:", error);
+    }
   };
 
   return (
@@ -101,11 +102,11 @@ const Write = () => {
             <VoteInput
               onChange={(e) => setVote1(e.target.value)}
               placeholder="선택지1을 적어주세요"
-            ></VoteInput>
+            />
             <VoteInput
               onChange={(e) => setVote2(e.target.value)}
               placeholder="선택지2를 적어주세요"
-            ></VoteInput>
+            />
           </VoteWrap>
           <Button type="submit">작성완료</Button>
         </Wrap>
