@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import { useLocation, useParams } from "react-router-dom";
@@ -7,6 +7,7 @@ import chatIcon from "../assets/icons/Vector.png";
 import Comments from "../components/Comments";
 import Footer from "../components/Footer";
 import sendIcon from "../assets/images/send.png"; // send 아이콘
+import { getComments } from "../APIs/voteAPi";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -20,7 +21,6 @@ const HomeWrapper = styled.div`
 const Wrap = styled.form`
   padding: 0px 16px;
 `;
-
 const InputWrap = styled.div`
   position: absolute;
   width: 354px;
@@ -164,51 +164,37 @@ const ChatImg = styled.img`
 const CommentWrap = styled.div`
   overflow: auto;
 `;
-
 const PostDetail = () => {
   const { id } = useParams();
   const location = useLocation();
-  const {
-    title,
-    category,
-    date,
-    vote1,
-    vote2,
-    vote1Title,
-    vote2Title,
-    commentCnt,
-    vote1Width,
-    vote2Width,
-    totalVotes,
-  } = location.state || {};
+  const { commentCnt, totalVotes, vote1id, vote2id } = location.state || {};
 
-  const dummyComments = [
-    {
-      nickname: "짱구짱최고",
-      date: "2024.10.17",
-      comment: "엥 enfp는 진짜 사람이 아닌 거 같은데요ㅋㅋㅋㅋ",
-    },
-    {
-      nickname: "망개떡최고",
-      date: "2024.10.17",
-      comment: "헐 그건 아니죠.. enfp가 사람이지ㅋㅋㅋㅋ",
-    },
-    {
-      nickname: "팝콘먹는중",
-      date: "2024.10.16",
-      comment: "재밌네 ㅋㅋㅋ 투표 해봤음?",
-    },
-    {
-      nickname: "초코우유좋아",
-      date: "2024.10.16",
-      comment: "estj가 ㄹㅇ임",
-    },
-    {
-      nickname: "게임고수짱짱",
-      date: "2024.10.15",
-      comment: "이건 뭐임ㅋㅋㅋ enfp가 왜 사람이 아님? ㅋㅋ",
-    },
-  ];
+  const [comments, setComments] = useState([]);
+  const [fetchedData, setFetchedData] = useState();
+  const [vote1Width, setVote1Width] = useState(0);
+  const [vote2Width, setVote2Width] = useState(0);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getComments(id);
+      console.log(response);
+      setFetchedData(response);
+      setComments(response?.voteReplies || []);
+
+      // 투표 퍼센티지 계산
+      const totalCount = response.totalCount || 0; // 전체 투표 수
+      if (totalCount > 0) {
+        const vote1Count = response.voteElements[0].count || 0;
+        const vote2Count = response.voteElements[1].count || 0;
+
+        // 투표 항목별 퍼센티지 계산
+        setVote1Width((vote1Count / totalCount) * 100);
+        setVote2Width((vote2Count / totalCount) * 100);
+      }
+    };
+
+    getData();
+  }, []);
 
   const [comment, setComment] = useState("");
 
@@ -229,26 +215,26 @@ const PostDetail = () => {
                 <ProfileImg src={userImg} />
                 <div>
                   <NickName>노루</NickName>
-                  <Date>{date}</Date>
+                  <Date>{fetchedData?.regDate.split("T")[0]}</Date>
                 </div>
               </UserWrap>
             </Info>
-            <Category>{category}</Category>
+            <Category>{fetchedData?.category}</Category>
           </Post>
           <SelectWrap>
-            <Title>{title}</Title>
+            <Title>{fetchedData?.title}</Title>
 
             <Select>
               <Select1 width={vote1Width}>
-                <SelectText>{vote1Title}</SelectText>
+                <SelectText>{fetchedData?.voteElements[0].title}</SelectText>
               </Select1>
               <Percentage>{parseInt(vote1Width)}%</Percentage>
             </Select>
             <Select>
               <Select2 width={vote2Width}>
-                <SelectText>{vote2Title}</SelectText>
-                <Percentage>{parseInt(vote2Width)}%</Percentage>
+                <SelectText>{fetchedData?.voteElements[1].title}</SelectText>
               </Select2>
+              <Percentage>{parseInt(vote2Width)}%</Percentage>
             </Select>
           </SelectWrap>
 
@@ -258,13 +244,14 @@ const PostDetail = () => {
           </ChatHead>
 
           <CommentWrap>
-            {dummyComments.map((comment, idx) => {
+            {fetchedData?.voteReplies.map((comment, idx) => {
               return (
                 <Comments
                   key={idx}
-                  nickname={comment.nickname}
-                  date={comment.date}
-                  comment={comment.comment}
+                  nickname={comment?.member?.nickname}
+                  date={comment?.regDate}
+                  comment={comment?.text}
+                  profile={comment?.member?.profileImageUrl}
                 />
               );
             })}
