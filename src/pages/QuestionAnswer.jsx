@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Header from "../components/Header";
 import gemini from "../components/gemini";
+import Footer from "../components/Footer";
+
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -132,8 +134,9 @@ const QuestionAnswer = () => {
   const navigate = useNavigate();
   const [fetchedData, setFetchedData] = useState({
     trustValue: 0,
-    question: "다시 질문해주세요",
-    content: "다시 질문해주세요"
+    question: "다시 질문해주세요!",
+    content: "연관관계 혹은 근거를 찾기 힘들어요 \n \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0다시 질문해주세요!",
+    title: "없음"
   });
 
     const removeBackticks = (response) => {
@@ -153,13 +156,16 @@ const QuestionAnswer = () => {
         
         // response가 string으로 넘어온 경우, JSON.parse로 파싱
         const parsedResponse = JSON.parse(response);
-
+        if(parseInt(parsedResponse.score, 10) != 0){
+          setFetchedData({
+            trustValue: parseInt(parsedResponse.score, 10), // score를 숫자로 변환하여 trustValue로 설정
+            question: parsedResponse.question,
+            content: parsedResponse.content,
+            title: parsedResponse.title
+          });
+        }
         // fetchedData 상태에 값 업데이트
-        setFetchedData({
-          trustValue: parseInt(parsedResponse.score, 10), // score를 숫자로 변환하여 trustValue로 설정
-          question: parsedResponse.question,
-          content: parsedResponse.content,
-        });
+        
       } catch (error) {
         console.error("Error fetching result:", error);
       }
@@ -184,23 +190,28 @@ const QuestionAnswer = () => {
               <TrustText>신뢰도: {fetchedData.trustValue}</TrustText>
             </TrustWrap>
             <Title>{fetchedData.question}</Title>
-            <Content>{fetchedData.content}</Content>
+            <Content style={{ whiteSpace: 'pre-line' }}>{fetchedData.content}</Content>
+            <br></br>
+            <div>
+              참고한 논문: {fetchedData.title}
+            </div>
           </Card>
           <Btn
             onClick={() => {
-              navigate("/home");
+              navigate("/question");
+            }}
+          >
+            다시 물어보기
+          </Btn>
+          <Btn
+            onClick={() => {
+              navigate("/search");
             }}
           >
             논문 검색을 통해 확실한 정보 찾아보기
           </Btn>
-          <Btn
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            홈으로 돌아가기
-          </Btn>
         </Wrap>
+        <Footer where={3}/>
       </HomeWrapper>
     </div>
   );
