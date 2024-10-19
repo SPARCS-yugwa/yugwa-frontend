@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import calendar from "../assets/icons/ic_date.png";
 import { getPaperDetail } from "../APIs/paperAPI";
 import geminiSummary from "../components/geminiSummary";
+import Spinner from "../components/Spinner";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -75,6 +76,7 @@ const SearchDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [summary, setSummary] = useState();
+  const [loading, setLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState({
     date: "",
     title: "",
@@ -91,6 +93,11 @@ const SearchDetail = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (summary != undefined) setLoading(false);
+  }, [summary]);
+
   return (
     <div className="All">
       <HomeWrapper>
@@ -101,6 +108,7 @@ const SearchDetail = () => {
               <Calendar src={calendar} />
               <Date>{fetchedData.year}</Date>
             </CalendarWrap>
+            {loading && <Spinner />}
             <Title>{fetchedData.title}</Title>
             <Content>{summary}</Content>
           </Card>

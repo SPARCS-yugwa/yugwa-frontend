@@ -171,8 +171,8 @@ const Search = () => {
     // fetchKeywordList();
     setSearchedKeywords([
       { word: "mbti" },
-      { word: "밥 먹으면 피곤함" },
-      { word: "공부 잘하는건 부모님 유전자" },
+      { word: "탈모" },
+      { word: "알코올" },
     ]);
   }, [userId]);
 
@@ -295,12 +295,17 @@ const Search = () => {
                 key={paper.id}
                 // onClick={() => placeClick(place.place_name)}
               >
-                <div style={{width:"80%"}}>
+                <div style={{ width: "77%" }}>
                   {paper.title.length > 20
                     ? `${paper.title.substring(0, 20)}...`
                     : paper.title}
                 </div>
-                <div style={{width:"20%", color:"#5752d9", cursor:"pointer"}} onClick={() => navigate(`/searchDetail/${paper.id}`)}>개요 보기</div>
+                <div
+                  style={{ width: "23%", color: "#5752d9", cursor: "pointer" }}
+                  onClick={() => navigate(`/searchDetail/${paper.id}`)}
+                >
+                  AI 요약 보기
+                </div>
               </KeywordLi>
             ))}
           </KeywordUl>
@@ -317,18 +322,20 @@ const Search = () => {
       ) : (
         <RecentWrap>
           <TextWrap>
-            <WhiteText style={{ fontSize: '16px' }}>현재 인기 있는 논문 키워드</WhiteText>
+            <WhiteText style={{ fontSize: "16px" }}>
+              현재 인기 있는 논문 키워드
+            </WhiteText>
           </TextWrap>
           <RecentUl>
             {searchedKeywords.map((keyword, index) => (
               <RecentLi key={index}>
                 <WhiteText
-                  style={{ color:"#5752d9", cursor: "pointer" }}
+                  style={{ color: "#5752d9", cursor: "pointer" }}
                   onClick={() => {
                     handleKeywordClick(keyword.word);
                   }}
                 >
-                  {"\u00A0" + (index+1) + ". " + keyword.word}
+                  {"\u00A0" + (index + 1) + ". " + keyword.word}
                 </WhiteText>
               </RecentLi>
             ))}

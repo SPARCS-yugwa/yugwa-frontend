@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import Header from "../components/Header";
 import gemini from "../components/gemini";
 import Footer from "../components/Footer";
-
+import Spinner from "../components/Spinner";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -132,40 +132,42 @@ const QuestionAnswer = () => {
   const [result, setResult] = useState();
   const { inputValue } = location.state || {};
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [fetchedData, setFetchedData] = useState({
     trustValue: 0,
     question: "다시 질문해주세요!",
-    content: "연관관계 혹은 근거를 찾기 힘들어요 \n \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0다시 질문해주세요!",
-    title: "없음"
+    content:
+      "연관관계 혹은 근거를 찾기 힘들어요 \n \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0다시 질문해주세요!",
+    title: "없음",
   });
 
-    const removeBackticks = (response) => {
-      // 백틱 세 개로 시작하고 끝나는지 확인
-      if (response.startsWith("```") && response.endsWith("```")) {
-        // 백틱 세 개를 제거하고 반환
-        return response.slice(3, -3);
-      }
-      return response; // 백틱이 없으면 원본 그대로 반환
-    };
+  const removeBackticks = (response) => {
+    // 백틱 세 개로 시작하고 끝나는지 확인
+    if (response.startsWith("```") && response.endsWith("```")) {
+      // 백틱 세 개를 제거하고 반환
+      return response.slice(3, -3);
+    }
+    return response; // 백틱이 없으면 원본 그대로 반환
+  };
   // 데이터를 가져오는 로직 추가
   useEffect(() => {
     const fetchResult = async () => {
       try {
         setText(inputValue); // 입력값을 바로 설정
         const response = await gemini(inputValue); // gemini 함수를 비동기로 호출
-        
+
         // response가 string으로 넘어온 경우, JSON.parse로 파싱
         const parsedResponse = JSON.parse(response);
-        if(parseInt(parsedResponse.score, 10) != 0){
+        if (parseInt(parsedResponse.score, 10) != 0) {
           setFetchedData({
             trustValue: parseInt(parsedResponse.score, 10), // score를 숫자로 변환하여 trustValue로 설정
             question: parsedResponse.question,
             content: parsedResponse.content,
-            title: parsedResponse.title
+            title: parsedResponse.title,
           });
+          setIsLoading(false);
         }
         // fetchedData 상태에 값 업데이트
-        
       } catch (error) {
         console.error("Error fetching result:", error);
       }
@@ -186,15 +188,27 @@ const QuestionAnswer = () => {
             </TrustBar>
           </TrustView>
           <Card>
-            <TrustWrap>
-              <TrustText>신뢰도: {fetchedData.trustValue}</TrustText>
-            </TrustWrap>
-            <Title>{fetchedData.question}</Title>
-            <Content style={{ whiteSpace: 'pre-line' }}>{fetchedData.content}</Content>
-            <br></br>
-            <div>
-              참고한 논문: {fetchedData.title}
-            </div>
+            {isLoading && <Spinner />}
+            {!isLoading && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <TrustWrap>
+                  <TrustText>신뢰도: {fetchedData.trustValue}</TrustText>
+                </TrustWrap>
+                <Title>{fetchedData.question}</Title>
+                <Content style={{ whiteSpace: "pre-line" }}>
+                  {fetchedData.content}
+                </Content>
+                <br></br>
+                <div>참고한 논문: {fetchedData.title}</div>
+              </div>
+            )}
           </Card>
           <Btn
             onClick={() => {
@@ -211,11 +225,10 @@ const QuestionAnswer = () => {
             논문 검색을 통해 확실한 정보 찾아보기
           </Btn>
         </Wrap>
-        <Footer where={3}/>
+        <Footer where={3} />
       </HomeWrapper>
     </div>
   );
 };
 
 export default QuestionAnswer;
-
