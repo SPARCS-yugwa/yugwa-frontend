@@ -114,13 +114,13 @@ const getTrustExplain = (trustValue) => {
   let trustExplain = "";
 
   if (trustValue >= 90) {
-    trustExplain = "신뢰도가 매우 높습니다.";
+    trustExplain = "일치도가 매우 높습니다.";
   } else if (trustValue >= 70) {
-    trustExplain = "높은 신뢰도를 가지고 있습니다.";
+    trustExplain = "높은 일치도를 가지고 있습니다.";
   } else if (trustValue >= 40) {
-    trustExplain = "낮은 신뢰도를 가지고 있습니다.";
+    trustExplain = "낮은 일치도를 가지고 있습니다.";
   } else {
-    trustExplain = "신뢰도가 매우 낮습니다.";
+    trustExplain = "일치도가 매우 낮습니다.";
   }
 
   return trustExplain;
@@ -165,8 +165,8 @@ const QuestionAnswer = () => {
             content: parsedResponse.content,
             title: parsedResponse.title,
           });
-          setIsLoading(false);
         }
+        setIsLoading(false);
         // fetchedData 상태에 값 업데이트
       } catch (error) {
         console.error("Error fetching result:", error);
@@ -199,7 +199,7 @@ const QuestionAnswer = () => {
                 }}
               >
                 <TrustWrap>
-                  <TrustText>신뢰도: {fetchedData.trustValue}</TrustText>
+                  <TrustText>일치도: {fetchedData.trustValue}</TrustText>
                 </TrustWrap>
                 <Title>{fetchedData.question}</Title>
                 <Content style={{ whiteSpace: "pre-line" }}>
