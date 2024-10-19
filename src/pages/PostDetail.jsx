@@ -7,7 +7,7 @@ import chatIcon from "../assets/icons/Vector.png";
 import Comments from "../components/Comments";
 import Footer from "../components/Footer";
 import sendIcon from "../assets/images/send.png"; // send 아이콘
-import { getComments } from "../APIs/voteAPi";
+import { addComment, getComments } from "../APIs/voteAPi";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -61,6 +61,7 @@ const ProfileImg = styled.img`
   width: 33px;
   height: 33px;
   margin-right: 16px;
+  border-radius: 50%;
 `;
 
 const PostTitle = styled.h1`
@@ -174,34 +175,51 @@ const PostDetail = () => {
   const [vote1Width, setVote1Width] = useState(0);
   const [vote2Width, setVote2Width] = useState(0);
 
+  const getData = async () => {
+    const response = await getComments(id);
+    console.log(response);
+    setFetchedData(response);
+    setComments(response?.voteReplies || []);
+
+    // 투표 퍼센티지 계산
+    const totalCount = response?.totalCount || 0; // 전체 투표 수
+    if (totalCount > 0) {
+      const vote1Count = response.voteElements[0].count || 0;
+      const vote2Count = response.voteElements[1].count || 0;
+
+      // 투표 항목별 퍼센티지 계산
+      setVote1Width((vote1Count / totalCount) * 100);
+      setVote2Width((vote2Count / totalCount) * 100);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      const response = await getComments(id);
-      console.log(response);
-      setFetchedData(response);
-      setComments(response?.voteReplies || []);
-
-      // 투표 퍼센티지 계산
-      const totalCount = response.totalCount || 0; // 전체 투표 수
-      if (totalCount > 0) {
-        const vote1Count = response.voteElements[0].count || 0;
-        const vote2Count = response.voteElements[1].count || 0;
-
-        // 투표 항목별 퍼센티지 계산
-        setVote1Width((vote1Count / totalCount) * 100);
-        setVote2Width((vote2Count / totalCount) * 100);
-      }
-    };
-
     getData();
   }, []);
 
   const [comment, setComment] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`댓글 내용: ${comment}`);
-    setComment(""); // 댓글 제출 후 입력란 비움
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    // Check if comment is not empty
+    if (comment.trim() === "") {
+      alert("댓글 내용을 입력해주세요.");
+      return;
+    }
+
+    try {
+      // Submit the comment first
+      await addComment(id, comment, "2024-10-19T16:13:37.724");
+
+      // After the comment is successfully added, fetch the updated data
+      await getData();
+
+      // Clear the comment input
+      setComment("");
+    } catch (error) {
+      console.error("Failed to submit comment:", error);
+    }
   };
 
   return (
@@ -212,9 +230,9 @@ const PostDetail = () => {
           <Post>
             <Info>
               <UserWrap>
-                <ProfileImg src={userImg} />
+                <ProfileImg src={fetchedData?.member?.profileImageUrl} />
                 <div>
-                  <NickName>노루</NickName>
+                  <NickName>{fetchedData?.member.nickname}</NickName>
                   <Date>{fetchedData?.regDate.split("T")[0]}</Date>
                 </div>
               </UserWrap>
@@ -249,7 +267,7 @@ const PostDetail = () => {
                 <Comments
                   key={idx}
                   nickname={comment?.member?.nickname}
-                  date={comment?.regDate}
+                  date={comment?.regDate.split("T")[0]}
                   comment={comment?.text}
                   profile={comment?.member?.profileImageUrl}
                 />

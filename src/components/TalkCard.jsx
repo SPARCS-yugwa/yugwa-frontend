@@ -128,7 +128,7 @@ const TalkCard = ({
   useEffect(() => {
     const getIsVoted = async () => {
       const response = await getWhereIsMyVote(id);
-      setIsVoted(response.userId);
+      setIsVoted(response?.userId);
     };
 
     getIsVoted();
