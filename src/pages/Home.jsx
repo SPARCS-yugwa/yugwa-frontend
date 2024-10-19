@@ -173,9 +173,10 @@ const Home = () => {
     const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
     const decoded = jwtDecode(token);
 
+    console.log("jwt : ", decoded);
     setUserId(decoded.id);
+    setUserData(decoded);
 
-    console.log(decoded);
     getData();
   }, [setUserData, setUserId]);
 
@@ -201,11 +202,14 @@ const Home = () => {
         <MainWrap>
           <UserWrap>
             <UserInfo>
-              <Profile src={userData.profile || ""} alt="Profile" />
+              <Profile src={userData.imageUrl || ""} alt="Profile" />
               <div>
-                <Nickname>{userData.name || "Guest"}</Nickname>{" "}
+                <Nickname>{userData.nickname || "Guest"}</Nickname>{" "}
                 {/* name 수정 */}
-                <GrayText>초급 Lv.{userData.exp}</GrayText> {/* exp 수정 */}
+                <GrayText>
+                  초급 Lv.{parseInt(userData.expLevel / 100) + 1}
+                </GrayText>{" "}
+                {/* exp 수정 */}
               </div>
             </UserInfo>
           </UserWrap>

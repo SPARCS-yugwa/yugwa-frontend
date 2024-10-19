@@ -13,6 +13,7 @@ import { faChevronLeft, faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import close from "../assets/close.png";
 import close from "../assets/icons/close.png";
+import { getPapers } from "../APIs/paperAPI";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -171,7 +172,7 @@ const Search = () => {
       const fetchKeywordList = async () => {
         if (typedText) {
           try {
-            const response = await keywordSearch(typedText);
+            const response = await getPapers(typedText);
             console.log("API Response:", response);
             setKeywordList(response || []);
           } catch (error) {
@@ -280,13 +281,15 @@ const Search = () => {
               <GrayText>검색 결과</GrayText>
               <WhiteText>{keywordList.length}</WhiteText>
             </KeywordCount>
-            {keywordList.map((place, index) => (
+            {keywordList.map((paper, index) => (
               <KeywordLi
-                key={index}
+                key={paper.id}
                 // onClick={() => placeClick(place.place_name)}
-                onClick={() => navigate(`/searchDetail/${place.id}`)}
+                onClick={() => navigate(`/searchDetail/${paper.id}`)}
               >
-                {place.place_name}
+                {paper.title.length > 30
+                  ? `${paper.title.substring(0, 30)}...`
+                  : paper.title}
               </KeywordLi>
             ))}
           </KeywordUl>
