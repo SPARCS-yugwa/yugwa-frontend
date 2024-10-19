@@ -11,6 +11,7 @@ import onboard2 from "../assets/images/onboard2.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { geolocationState, userDataState, locationState } from "../store/atoms";
+import kakaka from "../assets/images/kakaka.png";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -48,11 +49,14 @@ const StartLink = styled.div`
   align-items: center;
   text-align: center;
   background-color: #fee500;
+  background-image: url(${kakaka}); /* 배경 이미지 설정 */
+  background-size: cover; /* 배경 이미지가 전체를 덮도록 설정 */
+  background-position: center; /* 배경 이미지가 중앙에 오도록 설정 */
   border-radius: 10px;
   margin: auto;
   z-index: 3;
-  cursor: ${(props) => (props.active ? "pointer" : "default")};
-  color: ${(props) => (props.active ? "black" : "white")};
+  /* cursor: ${(props) => (props.active ? "pointer" : "default")}; */
+  /* color: ${(props) => (props.active ? "black" : "white")}; */
   font-size: 16px;
   text-decoration: none;
   /* transition: all 0.3s ease-in-out; */
@@ -187,20 +191,20 @@ const OnboardingPage = () => {
       )}
       <ViewWrapper offset={-50 * currentPage}>
         <View>
-          <MainText>언제나 궁금한 ~~ 과학이야 </MainText>
+          <MainText>MBTI는 과학이 맞다니까?</MainText>
           <MainText></MainText>
           <SubWrap>
-            <SubText>논문과 무엇무엇을 통해</SubText>
-            <SubText>내가 평상시 궁금하던 유사과학을 검증해봐요</SubText>
+            <SubText>평소 궁금했던 생각을 논문 데이터를 </SubText>
+            <SubText>활용해 근거를 찾아 알려드릴게요!</SubText>
             <SubText></SubText>
           </SubWrap>
         </View>
         <View>
-          <MainText>다른 사람이 이렇다는데? </MainText>
+          <MainText>다른 사람의 생각이 궁금해! </MainText>
           <MainText></MainText>
           <SubWrap>
-            <SubText>커뮤니티를 기반으로 투표하여</SubText>
-            <SubText>유사과학에 어떤 과학이 있는지 이야기해봐요</SubText>
+            <SubText>관심 있는 유사과학 주제를 함께 투표하고,</SubText>
+            <SubText>커뮤니티에서 이야기 나눠봐요!</SubText>
             {/* <SubText>다양한 경로를 추천해드려요</SubText> */}
           </SubWrap>
         </View>
@@ -224,7 +228,7 @@ const OnboardingPage = () => {
 
       <BtnWrap>
         <StartLink onClick={handleClick} active={currentPage === 1 ? 1 : 0}>
-          유과 시작하기
+          {/* 유과 시작하기 */}
         </StartLink>
         {/* <StartLink
           onClick={() => navigate("/home")}

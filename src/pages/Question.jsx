@@ -102,8 +102,8 @@ const Question = () => {
     if (inputValue.trim()) {
       navigate("/questionAnswer", {
         state: {
-          inputValue: inputValue
-        }
+          inputValue: inputValue,
+        },
       });
     }
   };
@@ -115,10 +115,10 @@ const Question = () => {
         <LogoIcon src={logoIcon} />
         <ButtonWrap>
           <ChatButton onClick={() => navigate("/questionAnswer")}>
-            MBTI에서 F는 {"\n"} 감성적이다.
+            MBTI F는 진짜{"\n"} 감성적인게 맞나요?
           </ChatButton>
           <ChatButton onClick={() => navigate("/questionAnswer")}>
-            공부 머리는 {"\n"} 유전자가 중요하다.
+            공부 머리는 유전자가{"\n"} 중요한가요?
           </ChatButton>
         </ButtonWrap>
       </ContentWrap>
@@ -130,11 +130,11 @@ const Question = () => {
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="메시지를 입력해주세요."
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleSend();
             }
           }}
-          />
+        />
         <Button onClick={handleSend} />
       </InputWrapper>
     </HomeWrapper>
