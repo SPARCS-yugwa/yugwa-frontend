@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import calendar from "../assets/icons/ic_date.png";
 import { getPaperDetail } from "../APIs/paperAPI";
+import geminiSummary from "../components/geminiSummary";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -73,17 +74,19 @@ const Btn = styled.button`
 const SearchDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [summary, setSummary] = useState();
   const [fetchedData, setFetchedData] = useState({
-    date: "2023.01.01",
-    title: "mbti 상관관계",
-    content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores modi velit illo nam explicabo optio deserunt, officiis sapiente provident culpa fuga saepe accusantium dolore sequi dicta, totam dolor. Sint, nemo.",
+    date: "",
+    title: "",
+    content: "",
   });
 
   //데이터 가져오는 로직 넣기
   useEffect(() => {
     const fetchData = async () => {
       const response = await getPaperDetail(id);
+      const result = await geminiSummary(response.summary);
+      setSummary(result);
       setFetchedData(response);
     };
     fetchData();
@@ -99,7 +102,7 @@ const SearchDetail = () => {
               <Date>{fetchedData.year}</Date>
             </CalendarWrap>
             <Title>{fetchedData.title}</Title>
-            <Content>{fetchedData.summary}</Content>
+            <Content>{summary}</Content>
           </Card>
           <Btn
             onClick={() => {
