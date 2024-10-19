@@ -118,6 +118,9 @@ const TalkCard = ({
     getIsVoted();
   }, []);
 
+  // Extract only the date part (before 'T')
+  const formattedDate = date.split("T")[0];
+
   return (
     <Card
       onClick={() =>
@@ -140,7 +143,7 @@ const TalkCard = ({
     >
       <TopBox>
         <Category>{category}</Category>
-        <Date>{date}</Date>
+        <Date>{formattedDate}</Date>
       </TopBox>
       <SelectWrap>
         <Title>{title}</Title>
@@ -165,6 +168,7 @@ const TalkCard = ({
         >
           투표하기
         </VoteBtn>
+        {isVoted.userId == null && <div>투표안했음</div>}
       </SelectWrap>
     </Card>
   );

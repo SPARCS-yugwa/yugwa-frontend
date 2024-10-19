@@ -197,8 +197,7 @@ const OnboardingPage = () => {
 
   const handleClick = () => {
     if (currentPage === 1) {
-      window.location.href =
-        "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=d3b80e0c52bbfd1c8c168532ffecd2cd&redirect_uri=https://yugwa.site/api/members/kakao";
+      window.location.href = url;
     }
   };
 
