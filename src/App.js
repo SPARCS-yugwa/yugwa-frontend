@@ -1,7 +1,6 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import OnboardingPage from "./pages/OnboardingPage";
-import ChatBot from "./pages/ChatBot";
 import Search from "./pages/Search";
 import Home from "./pages/Home";
 import Community from "./pages/Community";
@@ -17,7 +16,6 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/" element={<OnboardingPage />} />
         <Route path="/search" element={<Search />} />
         <Route path="/home" element={<Home />} />
@@ -25,7 +23,6 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/write" element={<Write />} />
         <Route path="/postDetail/:id" element={<PostDetail />} />
-        <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/searchDetail/:id" element={<SearchDetail />} />
         <Route path="/kakao" element={<OAuth2RedirectHandler />}></Route>
         <Route path="/question" element={<Question />} />

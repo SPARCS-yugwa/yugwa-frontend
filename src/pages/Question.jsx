@@ -5,7 +5,6 @@ import send from "../assets/icons/send.png";
 import logoIcon from "../assets/icons/yugwaLOGO.png";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "../store/atoms";
-import { fetchAndPlaySpeech, getReply } from "../APIs/chatbotAPI";
 import Header from "../components/Header";
 import gemini from "../components/gemini";
 
@@ -95,29 +94,17 @@ const LogoIcon = styled.img`
 `;
 
 const Question = () => {
-  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const userId = useRecoilValue(userIdState);
   const navigate = useNavigate();
 
   const handleSend = async () => {
     if (inputValue.trim()) {
-      const newMessages = [...messages, { text: inputValue, user: true }];
-      setMessages(newMessages);
-      setInputValue("");
-
-      const reply = await getReply(userId, inputValue);
-      gemini(inputValue);
-      fetchAndPlaySpeech(reply.chat);
-      const botMessage =
-        reply && reply.chat
-          ? reply.chat
-          : "챗봇 서비스에 문제가 발생했습니다. 나중에 다시 시도해주세요.";
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: botMessage, user: false },
-      ]);
+      navigate("/questionAnswer", {
+        state: {
+          inputValue: inputValue
+        }
+      });
     }
   };
 
@@ -128,10 +115,10 @@ const Question = () => {
         <LogoIcon src={logoIcon} />
         <ButtonWrap>
           <ChatButton onClick={() => navigate("/questionAnswer")}>
-            F는 진짜 {"\n"} 감성적인게 맞나요?
+            MBTI에서 F는 {"\n"} 감성적이다.
           </ChatButton>
           <ChatButton onClick={() => navigate("/questionAnswer")}>
-            공부는 유전자가 {"\n"} 중요한가요?
+            공부 머리는 {"\n"} 유전자가 중요하다.
           </ChatButton>
         </ButtonWrap>
       </ContentWrap>
@@ -142,7 +129,12 @@ const Question = () => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="메시지를 입력해주세요."
-        />
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSend();
+            }
+          }}
+          />
         <Button onClick={handleSend} />
       </InputWrapper>
     </HomeWrapper>
