@@ -130,7 +130,11 @@ const QuestionAnswer = () => {
   const [result, setResult] = useState();
   const { inputValue } = location.state || {};
   const navigate = useNavigate();
-  const [fetchedData, setFetchedData] = useState({});
+  const [fetchedData, setFetchedData] = useState({
+    trustValue: 0,
+    question: "다시 질문해주세요",
+    content: "다시 질문해주세요"
+  });
 
     const removeBackticks = (response) => {
       // 백틱 세 개로 시작하고 끝나는지 확인
