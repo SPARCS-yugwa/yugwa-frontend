@@ -152,11 +152,14 @@ const Home = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const response = await getVotes();
+      const response = (await getVotes()) || [];
+      setMyList(response.map((item) => item.id));
+      // console.log(myList);
+
       setFetchedData(response);
     };
     getData();
-    console.log(myList);
+    // console.log(myList);
   }, []);
 
   // 인덱스를 순환하여 카드를 표시하기 위한 로직
@@ -192,18 +195,19 @@ const Home = () => {
             <ChevronLeft icon={faChevronLeft} onClick={handlePrevClick} />
             <ChevronRight icon={faChevronRight} onClick={handleNextClick} />
             {/* 카드 데이터 순환 */}
-            {dummyDatas.map(
+            {fetchedData.map(
               (data, index) =>
-                index === cardIdx && (
+                index == cardIdx && (
                   <TalkCard
                     key={index}
+                    id={data.id}
                     title={data.title}
                     category={data.category}
-                    vote1={data.vote1}
-                    vote2={data.vote2}
-                    vote1Title={data.vote1Title}
-                    vote2Title={data.vote2Title}
-                    date={data.date}
+                    vote1={data.voteElements[0].count}
+                    vote2={data.voteElements[1].count}
+                    vote1Title={data.voteElements[0].title}
+                    vote2Title={data.voteElements[1].title}
+                    date={data.regDate}
                     commentCnt={data.commentCnt}
                   />
                 )

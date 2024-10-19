@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { getWhereIsMyVote } from "../APIs/voteAPi";
 
 const Card = styled.div`
   border: 1px solid #d0d7fb;
@@ -76,6 +77,7 @@ const Select2 = styled.div`
 
 const SelectText = styled.h1`
   font-size: 14px;
+  min-width: 100px;
   color: "#737373";
   margin-left: 14px;
 `;
@@ -104,6 +106,18 @@ const TalkCard = ({
   const vote1Width = (vote1 / totalVotes) * 100;
   const vote2Width = (vote2 / totalVotes) * 100;
   const navigate = useNavigate();
+  const [isVoted, setIsVoted] = useState();
+
+  useEffect(() => {
+    const getIsVoted = async () => {
+      console.log(id);
+      const response = await getWhereIsMyVote(id);
+      setIsVoted(response);
+    };
+
+    getIsVoted();
+  }, []);
+
   return (
     <Card
       onClick={() =>

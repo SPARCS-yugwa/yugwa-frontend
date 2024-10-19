@@ -91,6 +91,7 @@ const UserWrap = styled.div`
 
 const Select = styled.div`
   border-radius: 8px;
+  min-width: 120px;
   border: 1px solid #d2d2d2;
   height: 40px;
   display: flex;
@@ -117,6 +118,7 @@ const Select2 = styled.div`
 `;
 
 const SelectText = styled.h1`
+  min-width: 100px;
   font-size: 14px;
   color: "#737373";
   margin-left: 14px;

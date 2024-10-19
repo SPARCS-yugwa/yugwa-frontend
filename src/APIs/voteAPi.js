@@ -103,10 +103,10 @@ export const getWhereIsMyVote = async (voteId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("내가 투표한 곳 조회 성공", response.data.data);
+    console.log(`${voteId} 조회 여부 : `, response.data.data);
     return response.data.data;
   } catch (error) {
-    console.log("댓글 등록 에러 : ", error);
+    console.log("vote 여부 조회 실패 : ", error);
   }
 };
 

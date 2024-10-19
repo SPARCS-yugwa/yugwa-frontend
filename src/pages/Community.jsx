@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import writeImg from "../assets/images/writebtn.png";
 import Footer from "../components/Footer";
 import TalkCard from "../components/TalkCard";
 import { useNavigate } from "react-router-dom";
+import { getVotes } from "../APIs/voteAPi";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -20,13 +21,15 @@ const Write = styled.img`
   bottom: 100px;
   width: 60px;
   height: 60px;
+  z-index: 3;
 `;
 
 const Wrap = styled.div`
   padding-left: 8px;
   padding-right: 8px;
   gap: 10px;
-  overflow: auto;
+  overflow: auto; /* auto로 수정 */
+  height: calc(100vh - 150px); /* 고정된 높이 설정 */
 `;
 
 const Text = styled.h1`
@@ -79,6 +82,18 @@ const Community = () => {
       id: 1,
     },
   ];
+  const [fetchedData, setFetchedData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      const response = (await getVotes()) || [];
+      // console.log(myList);
+
+      setFetchedData(response);
+    };
+    getData();
+    // console.log(myList);
+  }, []);
+
   return (
     <div className="All">
       <HomeWrapper>
@@ -88,19 +103,19 @@ const Community = () => {
         <Wrap>
           <Text>함께하는 유사과학 이야기</Text>
           <CardWrap>
-            {dummyDatas.map((data, idx) => {
+            {fetchedData.map((data, index) => {
               return (
                 <TalkCard
-                  key={idx}
-                  category={data.category}
-                  commentCnt={data.commentCnt}
-                  date={data.date}
-                  title={data.title}
-                  vote1={data.vote1}
-                  vote2={data.vote2}
-                  vote1Title={data.vote1Title}
-                  vote2Title={data.vote2Title}
+                  key={index}
                   id={data.id}
+                  title={data.title}
+                  category={data.category}
+                  vote1={data.voteElements[0].count}
+                  vote2={data.voteElements[1].count}
+                  vote1Title={data.voteElements[0].title}
+                  vote2Title={data.voteElements[1].title}
+                  date={data.regDate}
+                  commentCnt={data.commentCnt}
                 />
               );
             })}
