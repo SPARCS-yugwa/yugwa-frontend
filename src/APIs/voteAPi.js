@@ -1,8 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./APIconfig";
 
-const token =
-  "eyJhbGciOiJIUzI1NiJ9.eyJleHBMZXZlbCI6MC4wLCJpZCI6MiwiZW1haWwiOiJud3k5OEBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOyasOyYgSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzI5MzE3NDIyLCJleHAiOjE3MzI5MTc0MjJ9.hqS7tHkdUSsiT8Fl_AaD2Z5cliME6yO2OX0T0R3ojrM";
+const token = localStorage.getItem("accessToken");
 
 //vote 전체 조회
 export const getVotes = async () => {

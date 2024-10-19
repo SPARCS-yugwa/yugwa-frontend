@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import a from "../assets/images/a.png";
@@ -64,6 +64,7 @@ const Select = styled.div`
 
 const MyPage = () => {
   const userData = useRecoilValue(userDataState);
+
   return (
     <div className="All">
       <HomeWrapper>

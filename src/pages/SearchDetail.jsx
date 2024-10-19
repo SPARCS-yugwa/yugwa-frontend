@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
 import calendar from "../assets/icons/ic_date.png";
+import { getPaperDetail } from "../APIs/paperAPI";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -80,7 +81,13 @@ const SearchDetail = () => {
   });
 
   //데이터 가져오는 로직 넣기
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getPaperDetail(id);
+      setFetchedData(response);
+    };
+    fetchData();
+  }, []);
   return (
     <div className="All">
       <HomeWrapper>
@@ -89,10 +96,10 @@ const SearchDetail = () => {
           <Card>
             <CalendarWrap>
               <Calendar src={calendar} />
-              <Date>{fetchedData.date}</Date>
+              <Date>{fetchedData.year}</Date>
             </CalendarWrap>
             <Title>{fetchedData.title}</Title>
-            <Content>{fetchedData.content}</Content>
+            <Content>{fetchedData.summary}</Content>
           </Card>
           <Btn
             onClick={() => {
