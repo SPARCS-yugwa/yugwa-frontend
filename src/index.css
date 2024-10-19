@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+:root {
+  --vh: 100vh;
+  --max-width: 380px;
+}
+
+/* 페이지 크기 제한 */
+.Home,
+.MyPage,
+.Onboarding,
+.NearbyPath,
+.FinishedPath,
+.LikedPath,
+.PopularPath,
+.PathDetail,
+.All {
+  max-width: var(--max-width);
+  /* min-height: 750px; */
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f2f2f2e1;
+}
+
+/* 모바일 100vh 필요한 곳에서 사용
+height: calc(var(--vh, 1vh) * 100);
+*/
