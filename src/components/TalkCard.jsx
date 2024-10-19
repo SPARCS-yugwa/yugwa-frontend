@@ -122,7 +122,7 @@ const TalkCard = ({
   const vote2Width = (currentVote2 / totalVotes) * 100 || 0;
 
   const navigate = useNavigate();
-  const [isVoted, setIsVoted] = useState();
+  const [isVoted, setIsVoted] = useState(-1);
   const [selectedVoteId, setSelectedVoteId] = useState(null);
 
   useEffect(() => {
@@ -162,7 +162,7 @@ const TalkCard = ({
       {/* 투표 안했을때 */}
       {isVoted == -1 && (
         <SelectWrap>
-          <Title>{title}</Title>
+          <Title onClick={() => navigate(`/postDetail/${id}`)}>{title}</Title>
 
           <Select>
             <NotSelect
@@ -196,7 +196,7 @@ const TalkCard = ({
       {/* 투표했을때 */}
       {isVoted != -1 && (
         <SelectWrap>
-          <Title>{title}</Title>
+          <Title onClick={() => navigate(`/postDetail/${id}`)}>{title}</Title>
 
           <Select>
             <Select1 width={vote1Width}>
