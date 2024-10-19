@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Header from "../components/Header";
+import gemini from "../components/gemini";
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -124,16 +125,44 @@ const getTrustExplain = (trustValue) => {
 };
 
 const QuestionAnswer = () => {
+  const location = useLocation();
+  const [text, setText] = useState();
+  const [result, setResult] = useState();
+  const { inputValue } = location.state || {};
   const navigate = useNavigate();
-  const [fetchedData, setFetchedData] = useState({
-    trustValue: 67,
-    title: "mbti 상관관계",
-    content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores modi velit illo nam explicabo optio deserunt, officiis sapiente provident culpa fuga saepe accusantium dolore sequi dicta, totam dolor. Sint, nemo.",
-  });
+  const [fetchedData, setFetchedData] = useState({});
 
-  //데이터 가져오는 로직 넣기
-  useEffect(() => {}, []);
+    const removeBackticks = (response) => {
+      // 백틱 세 개로 시작하고 끝나는지 확인
+      if (response.startsWith("```") && response.endsWith("```")) {
+        // 백틱 세 개를 제거하고 반환
+        return response.slice(3, -3);
+      }
+      return response; // 백틱이 없으면 원본 그대로 반환
+    };
+  // 데이터를 가져오는 로직 추가
+  useEffect(() => {
+    const fetchResult = async () => {
+      try {
+        setText(inputValue); // 입력값을 바로 설정
+        const response = await gemini(inputValue); // gemini 함수를 비동기로 호출
+        
+        // response가 string으로 넘어온 경우, JSON.parse로 파싱
+        const parsedResponse = JSON.parse(response);
+
+        // fetchedData 상태에 값 업데이트
+        setFetchedData({
+          trustValue: parseInt(parsedResponse.score, 10), // score를 숫자로 변환하여 trustValue로 설정
+          question: parsedResponse.question,
+          content: parsedResponse.content,
+        });
+      } catch (error) {
+        console.error("Error fetching result:", error);
+      }
+    };
+
+    fetchResult(); // 비동기 함수 호출
+  }, [inputValue]); // inputValue가 변경될 때마다 useEffect 실행
 
   return (
     <div className="All">
@@ -150,7 +179,7 @@ const QuestionAnswer = () => {
             <TrustWrap>
               <TrustText>신뢰도: {fetchedData.trustValue}</TrustText>
             </TrustWrap>
-            <Title>{fetchedData.title}</Title>
+            <Title>{fetchedData.question}</Title>
             <Content>{fetchedData.content}</Content>
           </Card>
           <Btn
@@ -174,3 +203,4 @@ const QuestionAnswer = () => {
 };
 
 export default QuestionAnswer;
+
