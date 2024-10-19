@@ -240,7 +240,7 @@ const Home = () => {
               <Img src={first} />
               <SelectText>유사과학 검색</SelectText>
             </Select1>
-            <Select2 onClick={() => navigate("/chatbot")}>
+            <Select2 onClick={() => navigate("/question")}>
               <Img src={second} />
               <SelectText>AI에게 물어보기</SelectText>
             </Select2>

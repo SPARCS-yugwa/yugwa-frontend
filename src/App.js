@@ -10,6 +10,8 @@ import Write from "./pages/Write";
 import PostDetail from "./pages/PostDetail";
 import SearchDetail from "./pages/SearchDetail";
 import OAuth2RedirectHandler from "./pages/OAuth2RedirectHandler";
+import Question from "./pages/Question";
+import QuestionAnswer from "./pages/QuestionAnswer";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/searchDetail/:id" element={<SearchDetail />} />
         <Route path="/kakao" element={<OAuth2RedirectHandler />}></Route>
+        <Route path="/question" element={<Question />} />
+        <Route path="/questionAnswer" element={<QuestionAnswer />} />
       </Routes>
     </div>
   );
