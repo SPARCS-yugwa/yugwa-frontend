@@ -12,11 +12,12 @@ const HomeWrapper = styled.div`
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 const Wrap = styled.div`
   padding: 0px 26px;
+  overflow: scroll;
 `;
 
 const TrustView = styled.div`

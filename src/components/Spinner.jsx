@@ -13,8 +13,8 @@ const SpinnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
-  height: 300px;
+  width: 270px;
+  height: 270px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: linear-gradient(to bottom left, #ec4899, #a855f7, #6366f1);
